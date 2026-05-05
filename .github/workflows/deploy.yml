@@ -1,0 +1,21 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+#in plain english:
+#when a push is made to the main branch, run this workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    #runs on the latest version of ubuntu,
+    steps:
+      - name: Trigger Render Deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+        #whats happening:
+        #it runs one command: curl -X POST which is basically sending 
+        #an HTTP request to Render saying "hey, new code is here, please redeploy". 
+        #The URL comes from the secret we added on GitHub so it's never exposed publicly.

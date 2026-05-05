@@ -29,7 +29,7 @@ app.use(cookieParser());
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 1000,                  // max 100 requests per IP per window
+    max: 100,                  // max 100 requests per IP per window
     message: 'Too many requests.'
 });
 app.use(limiter);
