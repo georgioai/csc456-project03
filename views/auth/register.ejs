@@ -1,0 +1,179 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Registration page for new users.
+Controller passes { user }.
+Handles both freelancer and client registration with role toggle. %>
+
+<%- include('../partials/header', { title: 'Register' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Create an Account</h2>
+  <p>Join Next Hire and start your journey</p>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/auth/register" method="POST">
+    <input type="hidden" name="role" id="roleInput" value="freelancer">
+
+    <%# GLASS ROLE TOGGLE %>
+    <div class="role-cards">
+      <div class="role-card selected" id="card-freelancer" onclick="selectRole('freelancer')">
+        <h3>&#128188; Freelancer</h3>
+      </div>
+      <div class="role-card" id="card-client" onclick="selectRole('client')">
+        <h3>&#127970; Client</h3>
+      </div>
+    </div>
+
+    <%# SHARED FIELDS %>
+    <label>Full Name *</label>
+    <input type="text" name="name" placeholder="e.g. John Doe" required>
+
+    <label>Email *</label>
+    <input type="email" name="email" placeholder="e.g. john@email.com" required>
+
+    <label>Password *</label>
+    <input type="password" name="password" placeholder="Enter a strong password" required>
+
+    <%# FREELANCER SPECIFIC FIELDS %>
+    <div id="freelancer-fields">
+      <hr>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Skills (comma separated)</label>
+          <input type="text" name="skills" placeholder="e.g. skill01, skill02, skill03">
+        </div>
+        <div class="form-group">
+          <label>Hourly Rate ($)</label>
+          <input type="number" name="hourlyRate" min="0" placeholder="e.g. 50">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Country</label>
+          <select name="country">
+            <option value="">-- Select country --</option>
+            <option>Algeria</option><option>Argentina</option><option>Armenia</option>
+            <option>Australia</option><option>Austria</option><option>Azerbaijan</option>
+            <option>Bahrain</option><option>Bangladesh</option><option>Belgium</option>
+            <option>Bolivia</option><option>Brazil</option><option>Bulgaria</option>
+            <option>Canada</option><option>Chile</option><option>China</option>
+            <option>Colombia</option><option>Croatia</option><option>Cyprus</option>
+            <option>Czech Republic</option><option>Denmark</option><option>Egypt</option>
+            <option>Estonia</option><option>Ethiopia</option><option>Finland</option>
+            <option>France</option><option>Georgia</option><option>Germany</option>
+            <option>Ghana</option><option>Greece</option><option>Hungary</option>
+            <option>Iceland</option><option>India</option><option>Indonesia</option>
+            <option>Iran</option><option>Iraq</option><option>Ireland</option>
+            <option>Israel</option><option>Italy</option><option>Japan</option>
+            <option>Jordan</option><option>Kazakhstan</option><option>Kenya</option>
+            <option>Kuwait</option><option>Latvia</option><option>Lebanon</option>
+            <option>Libya</option><option>Lithuania</option><option>Luxembourg</option>
+            <option>Malaysia</option><option>Malta</option><option>Mexico</option>
+            <option>Morocco</option><option>Netherlands</option><option>New Zealand</option>
+            <option>Nigeria</option><option>Norway</option><option>Oman</option>
+            <option>Pakistan</option><option>Palestine</option><option>Peru</option>
+            <option>Philippines</option><option>Poland</option><option>Portugal</option>
+            <option>Qatar</option><option>Romania</option><option>Russia</option>
+            <option>Saudi Arabia</option><option>Serbia</option><option>Singapore</option>
+            <option>South Africa</option><option>South Korea</option><option>Spain</option>
+            <option>Sri Lanka</option><option>Sweden</option><option>Switzerland</option>
+            <option>Syria</option><option>Taiwan</option><option>Thailand</option>
+            <option>Tunisia</option><option>Turkey</option><option>Ukraine</option>
+            <option>United Arab Emirates</option><option>United Kingdom</option>
+            <option>United States</option><option>Venezuela</option><option>Vietnam</option>
+            <option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Bio</label>
+          <textarea name="bio" maxlength="500" placeholder="Tell clients about yourself..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <%# CLIENT SPECIFIC FIELDS %>
+    <div id="client-fields" style="display:none;">
+      <hr>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Company</label>
+          <input type="text" name="company" placeholder="e.g. Acme Corp">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" name="phone" placeholder="e.g. +961 71 000 000">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Country</label>
+        <select name="country">
+          <option value="">-- Select country --</option>
+          <option>Algeria</option><option>Argentina</option><option>Armenia</option>
+          <option>Australia</option><option>Austria</option><option>Azerbaijan</option>
+          <option>Bahrain</option><option>Bangladesh</option><option>Belgium</option>
+          <option>Bolivia</option><option>Brazil</option><option>Bulgaria</option>
+          <option>Canada</option><option>Chile</option><option>China</option>
+          <option>Colombia</option><option>Croatia</option><option>Cyprus</option>
+          <option>Czech Republic</option><option>Denmark</option><option>Egypt</option>
+          <option>Estonia</option><option>Ethiopia</option><option>Finland</option>
+          <option>France</option><option>Georgia</option><option>Germany</option>
+          <option>Ghana</option><option>Greece</option><option>Hungary</option>
+          <option>Iceland</option><option>India</option><option>Indonesia</option>
+          <option>Iran</option><option>Iraq</option><option>Ireland</option>
+          <option>Israel</option><option>Italy</option><option>Japan</option>
+          <option>Jordan</option><option>Kazakhstan</option><option>Kenya</option>
+          <option>Kuwait</option><option>Latvia</option><option>Lebanon</option>
+          <option>Libya</option><option>Lithuania</option><option>Luxembourg</option>
+          <option>Malaysia</option><option>Malta</option><option>Mexico</option>
+          <option>Morocco</option><option>Netherlands</option><option>New Zealand</option>
+          <option>Nigeria</option><option>Norway</option><option>Oman</option>
+          <option>Pakistan</option><option>Palestine</option><option>Peru</option>
+          <option>Philippines</option><option>Poland</option><option>Portugal</option>
+          <option>Qatar</option><option>Romania</option><option>Russia</option>
+          <option>Saudi Arabia</option><option>Serbia</option><option>Singapore</option>
+          <option>South Africa</option><option>South Korea</option><option>Spain</option>
+          <option>Sri Lanka</option><option>Sweden</option><option>Switzerland</option>
+          <option>Syria</option><option>Taiwan</option><option>Thailand</option>
+          <option>Tunisia</option><option>Turkey</option><option>Ukraine</option>
+          <option>United Arab Emirates</option><option>United Kingdom</option>
+          <option>United States</option><option>Venezuela</option><option>Vietnam</option>
+          <option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit">Register</button>
+
+  </form>
+
+  <p>Already have an account? <a href="/auth/login">Login here</a></p>
+
+</main>
+
+<%# JS to handle role toggle and field switching %>
+<script>
+  function selectRole(role) {
+    document.getElementById('roleInput').value = role;
+    document.getElementById('card-freelancer').classList.remove('selected');
+    document.getElementById('card-client').classList.remove('selected');
+    document.getElementById('card-' + role).classList.add('selected');
+    document.getElementById('freelancer-fields').style.display = role === 'freelancer' ? 'block' : 'none';
+    document.getElementById('client-fields').style.display = role === 'client' ? 'block' : 'none';
+
+    // disable hidden section's inputs so they are excluded from form submission
+    document.querySelectorAll('#freelancer-fields input, #freelancer-fields select, #freelancer-fields textarea')
+      .forEach(el => el.disabled = role !== 'freelancer');
+    document.querySelectorAll('#client-fields input, #client-fields select, #client-fields textarea')
+      .forEach(el => el.disabled = role !== 'client');
+  }
+
+  // initialise on page load so client fields start disabled
+  selectRole('freelancer');
+</script>
+
+<%- include('../partials/footer') %>

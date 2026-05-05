@@ -1,0 +1,39 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a pre-filled form to edit an existing client. Admin only.
+Controller passes { user, client } on GET, and { user, client, error } if update fails. %>
+
+
+<%- include('../partials/header', { title: 'Edit Client' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Edit Client</h2>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+                                 <%#we will use value = .., to prefill the fields%>
+  <form action="/clients/edit/<%= client._id %>" method="POST">
+
+    <label>Full Name *</label>
+    <input type="text" name="name" value="<%= client.name %>" required>
+
+    <label>Email *</label>
+    <input type="email" name="email" value="<%= client.email %>" required>
+
+    <label>Company</label>
+    <input type="text" name="company" value="<%= client.company %>">
+
+    <label>Phone</label>
+    <input type="text" name="phone" value="<%= client.phone %>">
+
+    <label>Country</label>
+    <input type="text" name="country" value="<%= client.country %>">
+
+    <button type="submit">Update Client</button>
+  </form>
+
+  <a href="/clients">Back to Client</a>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,14 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shown when a logged-in user tries to access a page they don't have permission for.
+Controller passes { user }. %>
+
+<%- include('../partials/header', { title: 'Access Denied' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>403 — Access Denied</h2>
+  <p>You do not have permission to view this page.</p>
+  <a href="/dashboard">Back to Dashboard</a>
+</main>
+
+<%- include('../partials/footer') %>

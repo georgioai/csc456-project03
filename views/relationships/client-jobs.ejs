@@ -1,0 +1,50 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows all jobs belonging to a specific client.
+Controller passes { user, jobs } where jobs is populated with client data.
+Accessed via GET /jobs/client/:clientId %>
+
+<%- include('../partials/header', { title: 'Client Jobs' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Jobs by <%= jobs.length > 0 ? jobs[0].client.name : 'Client' %></h2>
+
+  <% if (jobs.length === 0) { %>
+    <p>This client has no jobs posted yet.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Budget</th>
+          <th>Deadline</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let i = 0; i < jobs.length; i++) { %>
+          <tr>
+            <td><%= jobs[i].title %></td>
+            <td><%= jobs[i].status %></td>
+            <td>$<%= jobs[i].budget %></td>
+            <td><%= jobs[i].deadline ? new Date(jobs[i].deadline).toDateString() : 'N/A' %></td>
+            <td>
+              <a href="/jobs/show/<%= jobs[i]._id %>">View</a>
+              <% if (user.role === 'admin' || user.role === 'client') { %>
+                <a href="/jobs/edit/<%= jobs[i]._id %>">Edit</a>
+                <form action="/jobs/delete/<%= jobs[i]._id %>" method="POST" style="display:inline;">
+                  <button type="submit" onclick="return confirm('Delete this job?')">Delete</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  <% } %>
+
+  <a href="/clients">Back to Clients</a>
+</main>
+
+<%- include('../partials/footer') %>

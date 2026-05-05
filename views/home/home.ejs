@@ -1,0 +1,79 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Public landing page shown to all visitors.
+Controller passes { user } — may be null if not logged in.
+Shows hero, stats, who we are, and feature cards. %>
+
+<%- include('../partials/header', { title: 'Welcome to Next Hire' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+
+  <%# HERO SECTION %>
+  <div class="hero">
+
+  <div class="hero-left">
+    <div class="hero-badge">Freelance Recruitment Platform</div>
+    <h1>Connect with the <span class="hero-highlight">Right Talent</span>,<br>Land the Right Job</h1>
+    <p class="hero-sub">Next Hire bridges the gap between skilled freelancers and ambitious clients making hiring faster, smarter, and more reliable.</p>
+    <div class="hero-btn-row">
+      <% if (user) { %>
+        <a class="hero-cta" href="/dashboard">Go to Dashboard</a>
+      <% } else { %>
+        <a class="hero-cta" href="/auth/register">Get Started Free</a>
+        <a class="hero-cta-outline" href="/auth/login">Sign In</a>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <img src="/images/landingpageimage.png"
+         alt="Next Hire illustration"
+         style="width: 100%; max-width: 400px;">
+  </div>
+
+</div>
+
+  <%# STATS ROW %>
+  <div class="stats-row">
+    <div class="stat-card">
+      <p class="stat-num">500+</p>
+      <p class="stat-lbl">Freelancers registered</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-num">120+</p>
+      <p class="stat-lbl">Active job listings</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-num">98%</p>
+      <p class="stat-lbl">Client satisfaction rate</p>
+    </div>
+  </div>
+
+  <%# WHO WE ARE %>
+  <div class="who-card">
+    <h2>GET TO KNOW US MORE</h2>
+    <p>Next Hire is a modern freelance recruitment platform designed to connect talented independent professionals with businesses of all sizes. Whether you are a developer, designer, or consultant  or a company looking for your next great hire  we provide the tools, transparency, and trust to make it happen. Our platform supports role based access for admins, clients, and freelancers, ensuring every user gets exactly the experience they need.</p>
+  </div>
+
+  <%# FEATURE CARDS %>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon">&#128188;</div>
+      <h3>Find Work</h3>
+      <p>Browse hundreds of open jobs, apply directly, and track your applications all in one place.</p>
+    </div>
+    <div class="feat-card feat-card-green">
+      <div class="feat-icon">&#127970;</div>
+      <h3>Hire Talent</h3>
+      <p>Post jobs, review applications, and accept the right freelancer for your project with ease.</p>
+    </div>
+    <div class="feat-card feat-card-amber">
+      <div class="feat-icon">&#128737;</div>
+      <h3>Trusted Platform</h3>
+      <p>Role based access, secure authentication, and full transparency at every step of the process.</p>
+    </div>
+  </div>
+
+</main>
+
+<%- include('../partials/footer') %>

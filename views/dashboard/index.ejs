@@ -1,0 +1,120 @@
+<%# THE FOLLOWING PAGE'S FUNCTION: Role-based dashboard shown after login. Controller passes { user } with user.name,
+    user.role, user.email. Displays different quick action cards depending on role: admin, client, freelancer. %>
+
+    <%- include('../partials/header', { title: 'Dashboard' }) %>
+        <%- include('../partials/navbar') %>
+
+            <main>
+
+                <%# WELCOME HEADER %>
+                    <div class="dash-welcome">
+                        <h2>Welcome back, <%= user.name %> <span class="dash-role-badge">
+                                    <%= user.role %>
+                                </span></h2>
+                        <p>Here's what's waiting for you on NextHire</p>
+                    </div>
+
+                    <div class="dash-grid">
+
+                        <%# ADMIN DASHBOARD %>
+                            <% if (user.role==='admin' ) { %>
+
+                                <div class="dash-card">
+                                    <h3>Clients</h3>
+                                    <p>Manage all registered clients on the platform</p>
+                                    <div class="dash-links">
+                                        <a class="dash-link" href="/clients">View all clients</a>
+                                        <a class="dash-link" href="/clients/new">Add new client</a>
+                                    </div>
+                                </div>
+
+                                <div class="dash-card dash-card-green">
+                                    <h3>Freelancers</h3>
+                                    <p>Browse and manage the full talent pool</p>
+                                    <div class="dash-links">
+                                        <a class="dash-link" href="/freelancers">View all freelancers</a>
+                                        <a class="dash-link" href="/freelancers/new">Add new freelancer</a>
+                                    </div>
+                                </div>
+
+                                <div class="dash-card dash-card-amber">
+                                    <h3>Jobs</h3>
+                                    <p>All job listings posted on the platform</p>
+                                    <div class="dash-links">
+                                        <a class="dash-link" href="/jobs">View all jobs</a>
+                                        <a class="dash-link" href="/jobs/new">Post a new job</a>
+                                    </div>
+                                </div>
+
+                                <div class="dash-card dash-card-teal">
+                                    <h3>Applications</h3>
+                                    <p>Track and manage all submitted applications</p>
+                                    <div class="dash-links">
+                                        <a class="dash-link" href="/applications">View all applications</a>
+                                    </div>
+                                </div>
+
+                                
+                                <%# CLIENT DASHBOARD %>
+                                    <% } else if (user.role==='client' ) { %>
+
+                                        <div class="dash-card">
+                                            <h3>My Jobs</h3>
+                                            <p>Manage the jobs you have posted</p>
+                                            <div class="dash-links">
+                                                <a class="dash-link" href="/jobs">View my jobs</a>
+                                                <a class="dash-link" href="/jobs/new">Post a new job</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="dash-card dash-card-green">
+                                            <h3>Applications</h3>
+                                            <p>Review freelancers who applied to your jobs</p>
+                                            <div class="dash-links">
+                                                <a class="dash-link" href="/applications">View applications</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="dash-card dash-card-amber">
+                                            <h3>Freelancers</h3>
+                                            <p>Browse available talent on the platform</p>
+                                            <div class="dash-links">
+                                                <a class="dash-link" href="/freelancers">Browse freelancers</a>
+                                            </div>
+                                        </div>
+
+                                        <%# FREELANCER DASHBOARD %>
+                                            <% } else if (user.role==='freelancer' ) { %>
+
+                                                <div class="dash-card">
+                                                    <h3>Browse Jobs</h3>
+                                                    <p>Find your next opportunity</p>
+                                                    <div class="dash-links">
+                                                        <a class="dash-link" href="/jobs">View all open jobs</a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="dash-card dash-card-green">
+                                                    <h3>My Applications</h3>
+                                                    <p>Track all your submitted applications</p>
+                                                    <div class="dash-links">
+                                                        <a class="dash-link" href="/applications">View my
+                                                            applications</a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="dash-card dash-card-amber">
+                                                    <h3>My Profile</h3>
+                                                    <p>Keep your skills and rate up to date</p>
+                                                    <div class="dash-links">
+                                                        <a class="dash-link" href="/freelancers/show/<%= user.refId %>">View my profile</a>
+                                                    </div>
+                                                </div>
+
+                                                <% } %>
+
+                    </div>
+
+            </main>
+
+            <%- include('../partials/footer') %>

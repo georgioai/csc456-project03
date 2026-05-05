@@ -1,0 +1,30 @@
+<%- include('../partials/header', { title: 'Login' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+    
+    <div class="login-box">
+        <h2>Login</h2>
+
+  <%# 'error' is only passed by the route on failed login;
+   typeof check prevents a ReferenceError when the variable is absent %>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/auth/login" method="POST">
+    <label>Email *</label>
+    <input type="email" name="email" required>
+
+    <label>Password *</label>
+    <input type="password" name="password" required>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <p>Don't have an account? <a href="/auth/register">Register here</a></p>
+</div>
+</main>
+
+<%- include('../partials/footer') %>

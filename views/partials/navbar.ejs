@@ -1,0 +1,33 @@
+<nav>
+  <a href="/">Home</a>
+
+  <% if (user) { %>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/jobs">Jobs</a>
+    <a href="/applications">Applications</a>
+
+    <% if (user.role === 'admin') { %>
+      <a href="/clients">Clients</a>
+      <a href="/freelancers">Freelancers</a>
+    <% } %>
+
+    <% if (user.role === 'client') { %>
+      <a href="/jobs/new">Post a Job</a>
+    <% } %>
+
+<a href="/auth/logout">Logout</a>
+
+    <%
+      let avatarClass = 'avatar-admin';
+      let profileHref = '/dashboard';
+      let initial = user.name ? user.name[0].toUpperCase() : '?';
+      if (user.role === 'client')     { avatarClass = 'avatar-client';     profileHref = '/clients/show/'     + user.refId; }
+      if (user.role === 'freelancer') { avatarClass = 'avatar-freelancer'; profileHref = '/freelancers/show/' + user.refId; }
+    %>
+    <a href="<%= profileHref %>" class="avatar-btn <%= avatarClass %>"><%= initial %></a>
+
+  <% } else { %>
+    <a href="/auth/login">Login</a>
+    <a href="/auth/register">Register</a>
+  <% } %>
+</nav>

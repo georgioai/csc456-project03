@@ -1,0 +1,54 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a pre-filled form to edit an existing job. Admin and Client (own jobs only).
+Controller passes { user, job } on GET, { user, job, error } if update fails. %>
+
+<%- include('../partials/header', { title: 'Edit Job' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Edit Job</h2>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/jobs/edit/<%= job._id %>" method="POST">
+
+    <label>Job Title *</label>
+    <input type="text" name="title" value="<%= job.title %>" required>
+
+    <label>Description *</label>
+    <textarea name="description" required><%= job.description %></textarea>
+
+    <label>Category</label>
+    <input type="text" name="category" value="<%= job.category %>">
+
+    <label>Expected Period</label>
+    <select name="expectedPeriod">
+      <option value="">-- Select period --</option>
+      <option value="2 weeks"    <%= job.expectedPeriod === '2 weeks'   ? 'selected' : '' %>>2 weeks</option>
+      <option value="1 month"    <%= job.expectedPeriod === '1 month'   ? 'selected' : '' %>>1 month</option>
+      <option value="2 months"   <%= job.expectedPeriod === '2 months'  ? 'selected' : '' %>>2 months</option>
+      <option value="+3 months"  <%= job.expectedPeriod === '+3 months' ? 'selected' : '' %>>+3 months</option>
+    </select>
+
+    <label>Budget ($)</label>
+    <input type="number" name="budget" value="<%= job.budget %>" min="0">
+
+    <label>Deadline</label>
+    <input type="date" name="deadline" value="<%= job.deadline ? job.deadline.toISOString().split('T')[0] : '' %>">
+
+    <label>Status</label>
+    <select name="status">
+      <option value="open" <%= job.status === 'open' ? 'selected' : '' %>>Open</option>
+      <option value="in progress" <%= job.status === 'in progress' ? 'selected' : '' %>>In Progress</option>
+      <option value="closed" <%= job.status === 'closed' ? 'selected' : '' %>>Closed</option>
+    </select>
+
+    <button type="submit">Update Job</button>
+  </form>
+
+  <a href="/jobs/show/<%= job._id %>">Back to Job</a>
+</main>
+
+<%- include('../partials/footer') %>

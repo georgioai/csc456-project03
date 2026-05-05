@@ -1,0 +1,63 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a list of applications based on role.
+Admin sees all, Client sees applications on their jobs, Freelancer sees their own.
+Controller passes { user, applications } populated with job, client, and freelancer data. %>
+
+<%- include('../partials/header', { title: 'Applications' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>
+    <% if (user.role === 'admin') { %>All Applications
+    <% } else if (user.role === 'client') { %>Applications on My Jobs
+    <% } else { %>My Applications
+    <% } %>
+  </h2>
+
+  <% if (applications.length === 0) { %>
+    <p>No applications found.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Job Title</th>
+          <th>Client</th>
+          <% if (user.role !== 'freelancer') { %>
+            <th>Freelancer</th>
+          <% } %>
+          <th>Status</th>
+          <th>Proposed Rate</th>
+          <th>Applied At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let i = 0; i < applications.length; i++) { %>
+          <tr>
+            <td><%= applications[i].job.title %></td>
+            <td><%= applications[i].job.client ? applications[i].job.client.name : 'N/A' %></td>
+            <% if (user.role !== 'freelancer') { %>
+              <td><%= applications[i].freelancer ? applications[i].freelancer.name : 'N/A' %></td>
+            <% } %>
+            <td><span class="status-pill status-<%= applications[i].status.replace(/ /g, '-') %>"><%= applications[i].status %></span></td>
+            <td>$<%= applications[i].proposedRate %></td>
+            <td><%= new Date(applications[i].appliedAt).toDateString() %></td>
+            <td>
+              <div class="action-btns">
+                <a href="/applications/show/<%= applications[i]._id %>">View</a>
+                <% if (user.role === 'admin' || user.role === 'freelancer') { %>
+                  <form action="/applications/delete/<%= applications[i]._id %>" method="POST">
+                    <button type="submit" onclick="return confirm('Delete this application?')">Delete</button>
+                  </form>
+                <% } %>
+              </div>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  <% } %>
+  <a href="/dashboard">Back to Dashboard</a>
+</main>
+
+<%- include('../partials/footer') %>

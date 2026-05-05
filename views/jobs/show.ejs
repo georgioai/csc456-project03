@@ -1,0 +1,71 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows full details of a single job and its applications.
+Controller passes { user, job, applications } where job is populated
+with client data and applications are populated with freelancer data. %>
+
+<%- include('../partials/header', { title: job.title }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2><%= job.title %></h2>
+
+  <p><strong>Client:</strong> <%= job.client ? job.client.name : 'N/A' %></p>
+  <p><strong>Description:</strong> <%= job.description %></p>
+  <p><strong>Category:</strong> <%= job.category %></p>
+  <p><strong>Budget:</strong> $<%= job.budget %></p>
+  <p><strong>Deadline:</strong> <%= job.deadline ? new Date(job.deadline).toDateString() : 'N/A' %></p>
+  <p><strong>Expected Period:</strong> <%= job.expectedPeriod || 'N/A' %></p>
+  <p><strong>Status:</strong> <span class="status-pill status-<%= job.status.replace(/ /g, '-') %>"><%= job.status %></span></p>
+  <p><strong>Posted:</strong> <%= job.createdAt.toDateString() %></p>
+
+  <% if (user.role === 'admin' || user.role === 'client') { %>
+    <a href="/jobs/edit/<%= job._id %>">Edit Job</a> <br>
+
+    <form action="/jobs/close/<%= job._id %>" method="POST" style="display:inline;">
+      <button type="submit" onclick="return confirm('Close this job?')">Close Job</button>
+    </form>
+
+    <form action="/jobs/delete/<%= job._id %>" method="POST" style="display:inline;">
+      <button type="submit" onclick="return confirm('Delete this job and all its applications?')">Delete Job</button>
+    </form>
+  <% } %>
+
+  <% if (user.role === 'freelancer' && job.status === 'open') { %>
+    <a href="/applications/new?jobId=<%= job._id %>">Apply to this Job</a>
+  <% } %>
+
+  <hr>
+
+  <% if (user.role === 'admin' || user.role === 'client') { %>
+    <h3>Applications (<%= applications.length %>)</h3>
+
+    <% if (applications.length === 0) { %>
+      <p>No applications yet.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Freelancer</th>
+            <th>Status</th>
+            <th>Proposed Rate</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i = 0; i < applications.length; i++) { %>
+            <tr>
+              <td><%= applications[i].freelancer.name %></td>
+              <td><span class="status-pill status-<%= applications[i].status.replace(/ /g, '-') %>"><%= applications[i].status %></span></td>
+              <td>$<%= applications[i].proposedRate %></td>
+              <td><a href="/applications/show/<%= applications[i]._id %>">View</a></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } %>
+  <% } %>
+
+  <a href="/jobs">Back to Jobs</a>
+</main>
+
+<%- include('../partials/footer') %>

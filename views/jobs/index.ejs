@@ -1,0 +1,77 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a list of all jobs. All roles see this but with different data:
+Admin sees all jobs, Client sees only their own jobs, Freelancer sees only open jobs.
+Controller passes { user, jobs } where jobs is populated with client data. %>
+
+<%- include('../partials/header', { title: 'Jobs' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>
+    <% if (user.role === 'admin') { %>All Jobs
+    <% } else if (user.role === 'client') { %>My Posted Jobs
+    <% } else { %>Browse Open Jobs
+    <% } %>
+  </h2>
+
+  <% if (user.role === 'admin' || user.role === 'client') { %>
+    <a href="/jobs/new">+ Post New Job</a>
+  <% } %>
+  <%if (user.role === 'admin' || user.role === 'client') { %>
+<form action="/jobs/filter" method="GET">
+  <select name="status">
+    <option value="open">Open</option>
+    <option value="closed">Closed</option>
+    <option value="in progress">In Progress</option>
+    <option value="cancelled">Cancelled</option>
+  </select>
+  <button type="submit">Filter</button>
+</form>
+  <% } %>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Client</th>
+        <th>Status</th>
+        <th>Budget</th>
+        <th>Deadline</th>
+        <th>Expected Period</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i = 0; i < jobs.length; i++) { %>
+        <tr>
+          <td><%= jobs[i].title %></td>
+          <td><%= jobs[i].client ? jobs[i].client.name : 'N/A' %></td>
+          <td><span class="status-pill status-<%= jobs[i].status.replace(/ /g, '-') %>"><%= jobs[i].status %></span></td>
+          <td>$<%= jobs[i].budget %></td>
+          <td><%= jobs[i].deadline ? new Date(jobs[i].deadline).toDateString() : 'N/A' %></td>
+          <td><%= jobs[i].expectedPeriod ? jobs[i].expectedPeriod : 'N/A' %></td>
+          <td>
+            <div class="action-btns">
+              <a href="/jobs/show/<%= jobs[i]._id %>">View</a>
+              <% if (user.role === 'admin' || user.role === 'client') { %>
+                <a href="/jobs/edit/<%= jobs[i]._id %>">Edit</a>
+                <form action="/jobs/delete/<%= jobs[i]._id %>" method="POST">
+                  <button type="submit" onclick="return confirm('Delete this job and all its applications?')">Delete</button>
+                </form>
+                <form action="/jobs/close/<%= jobs[i]._id %>" method="POST">
+                  <button type="submit" onclick="return confirm('Close this job?')">Close</button>
+                </form>
+              <% } %>
+              <% if (user.role === 'freelancer') { %>
+                <a href="/applications/new?jobId=<%= jobs[i]._id %>">Apply</a>
+              <% } %>
+            </div>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <a href="/dashboard">Back to Dashboard</a>
+</main>
+
+<%- include('../partials/footer') %>

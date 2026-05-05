@@ -1,0 +1,57 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows full details of a single client and a list of their jobs.
+Controller passes { user, client, jobs } where jobs is an array of jobs belonging to this client. %>
+
+<%- include('../partials/header', { title: client.name }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2><%= client.name %></h2>
+
+  <p><strong>Email:</strong> <%= client.email %></p>
+  <p><strong>Company:</strong> <%= client.company %></p>
+  <p><strong>Phone:</strong> <%= client.phone %></p>
+  <p><strong>Country:</strong> <%= client.country %></p>
+  <p><strong>Member Since:</strong> <%= client.createdAt.toDateString() %></p>
+
+  <a href="/clients/edit/<%= client._id %>">Edit Client</a><br>
+  <form action="/clients/delete/<%= client._id %>" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Delete this client and all their jobs?')">Delete Client</button>
+  </form>
+
+  <hr>
+
+  <h3>Jobs Posted by <%= client.name %></h3>
+
+  <% if (jobs.length === 0) { %>
+    <p>No jobs posted yet.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Budget</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let i = 0; i < jobs.length; i++) { %>
+          <tr>
+            <td><%= jobs[i].title %></td>
+            <td><span class="status-pill status-<%= jobs[i].status.replace(/ /g, '-') %>"><%= jobs[i].status %></span></td>
+            <td>$<%= jobs[i].budget %></td>
+            <td><a href="/jobs/show/<%= jobs[i]._id %>">View Job</a></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  <% } %>
+<% if (user.role === 'client') { %>
+  <a href="/dashboard">Back to Dashboard</a>
+<% } else { %>
+  <a href="/clients">Back to Clients</a>
+<% } %>
+</main>
+
+<%- include('../partials/footer') %>

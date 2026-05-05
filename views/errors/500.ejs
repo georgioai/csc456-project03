@@ -1,0 +1,18 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shown when an unexpected server error occurs.
+Controller passes { user }. %>
+
+<%- include('../partials/header', { title: 'Server Error' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>500 — Something Went Wrong</h2>
+  <p>An unexpected error occurred on our end. Please try again later.</p>
+  <% if (user) { %>
+    <a href="/dashboard">Back to Dashboard</a>
+  <% } else { %>
+    <a href="/auth/login">Go to Login</a>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

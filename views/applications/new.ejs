@@ -1,0 +1,35 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a form for a freelancer to apply to a job.
+Controller passes { user, job } where job is the job being applied to.
+The job field is pre-filled as a hidden input. %>
+
+<%- include('../partials/header', { title: 'Apply to Job' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Apply to: <%= job.title %></h2>
+
+  <p><strong>Client:</strong> <%= job.client ? job.client.name : 'N/A' %></p>
+  <p><strong>Budget:</strong> $<%= job.budget %></p>
+  <p><strong>Description:</strong> <%= job.description %></p>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/applications/new" method="POST">
+    <input type="hidden" name="job" value="<%= job._id %>">
+
+    <label>Cover Letter</label>
+    <textarea name="coverLetter" maxlength="1000"></textarea>
+
+    <label>Proposed Rate ($/hr)</label>
+    <input type="number" name="proposedRate" min="0">
+
+    <button type="submit">Submit Application</button>
+  </form>
+
+  <a href="/jobs">Back to Jobs</a>
+</main>
+
+<%- include('../partials/footer') %>

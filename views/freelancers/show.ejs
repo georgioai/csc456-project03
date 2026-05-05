@@ -1,0 +1,61 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows full details of a single freelancer and their applications.
+Controller passes { user, freelancer, applications } where applications
+is populated with job and client data. %>
+
+<%- include('../partials/header', { title: freelancer.name }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2><%= freelancer.name %></h2>
+
+  <p><strong>Email:</strong> <%= freelancer.email %></p>
+  <p><strong>Skills:</strong> <%= freelancer.skills.join(', ') %></p>
+  <p><strong>Hourly Rate:</strong> $<%= freelancer.hourlyRate %></p>
+  <p><strong>Country:</strong> <%= freelancer.country %></p>
+  <p><strong>Bio:</strong> <%= freelancer.bio %></p>
+  <p><strong>Member Since:</strong> <%= freelancer.createdAt.toDateString() %></p>
+
+  <a href="/freelancers/edit/<%= freelancer._id %>">Edit</a><br>
+  <form action="/freelancers/delete/<%= freelancer._id %>" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Delete this freelancer and all their applications?')">Delete Freelancer</button>
+  </form>
+
+  <hr>
+
+  <h3>Applications by <%= freelancer.name %></h3>
+
+  <% if (applications.length === 0) { %>
+    <p>No applications yet.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Job Title</th>
+          <th>Client</th>
+          <th>Status</th>
+          <th>Proposed Rate</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let i = 0; i < applications.length; i++) { %>
+          <tr>
+            <td><%= applications[i].job.title %></td>
+            <td><%= applications[i].job.client.name %></td>
+            <td><span class="status-pill status-<%= applications[i].status.replace(/ /g, '-') %>"><%= applications[i].status %></span></td>
+            <td>$<%= applications[i].proposedRate %></td>
+            <td><a href="/applications/show/<%= applications[i]._id %>">View</a></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  <% } %>
+<% if (user.role === 'freelancer') { %>
+    <a href="/dashboard">Back to Dashboard</a>
+<% } else { %>
+  <a href="/freelancers">Back to Freelancers</a>
+<% } %>
+</main>
+
+<%- include('../partials/footer') %>

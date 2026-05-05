@@ -1,0 +1,46 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a table of all clients. Admin only. 
+The controller passes { user, clients } where clients is an array 
+of all client documents from MongoDB. %>
+
+<%- include('../partials/header', { title: 'All Clients' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>All Clients</h2>
+  <a href="/clients/new">+ Add New Client</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Company</th>
+        <th>Country</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i = 0; i < clients.length; i++) { %>
+        <tr>
+          <td><%= clients[i].name %></td>
+          <td><%= clients[i].email %></td>
+          <td><%= clients[i].company %></td>
+          <td><%= clients[i].country %></td>
+          <td>
+            <a href="/clients/show/<%= clients[i]._id %>">View</a>
+            <a href="/clients/edit/<%= clients[i]._id %>">Edit</a>
+            <a href="/jobs/client/<%= clients[i]._id %>">View Jobs</a>
+            <form action="/clients/delete/<%= clients[i]._id %>" method="POST" style="display:inline;">
+              <button type="submit" onclick="return confirm('Delete this client?')">Delete</button>
+              
+            </form>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <a href="/dashboard">Back to Dashboard</a>
+</main>
+
+<%- include('../partials/footer') %>

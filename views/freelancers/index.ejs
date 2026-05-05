@@ -1,0 +1,48 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a table of all freelancers. Admin only.
+Controller passes { user, freelancers } where freelancers is an array
+of all freelancer documents from MongoDB. %>
+
+<%- include('../partials/header', { title: 'All Freelancers' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>All Freelancers</h2>
+  <a href="/freelancers/new">+ Add New Freelancer</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Skills</th>
+        <th>Hourly Rate</th>
+        <th>Country</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i = 0; i < freelancers.length; i++) { %>
+        <tr>
+          <td><%= freelancers[i].name %></td>
+          <td><%= freelancers[i].email %></td>
+          <td><%= freelancers[i].skills.join(', ') %></td>
+          <td>$<%= freelancers[i].hourlyRate %></td>
+          <td><%= freelancers[i].country %></td>
+          <td>
+            <div class="action-btns">
+              <a href="/freelancers/show/<%= freelancers[i]._id %>">View</a>
+              <a href="/freelancers/edit/<%= freelancers[i]._id %>">Edit</a>
+              <form action="/freelancers/delete/<%= freelancers[i]._id %>" method="POST">
+                <button type="submit" onclick="return confirm('Delete this freelancer?')">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <a href="/dashboard">Back to Dashboard</a>
+</main>
+
+<%- include('../partials/footer') %>

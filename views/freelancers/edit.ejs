@@ -1,0 +1,41 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a pre-filled form to edit an existing freelancer. Admin only.
+Controller passes { user, freelancer } on GET, and { user, freelancer, error } if update fails. %>
+
+<%- include('../partials/header', { title: 'Edit Freelancer' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Edit Freelancer</h2>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/freelancers/edit/<%= freelancer._id %>" method="POST">
+
+    <label>Full Name *</label>
+    <input type="text" name="name" value="<%= freelancer.name %>" required>
+
+    <label>Email *</label>
+    <input type="email" name="email" value="<%= freelancer.email %>" required>
+
+    <label>Skills (comma separated)</label>
+    <input type="text" name="skills" value="<%= freelancer.skills.join(', ') %>">
+
+    <label>Hourly Rate ($)</label>
+    <input type="number" name="hourlyRate" value="<%= freelancer.hourlyRate %>" min="0">
+
+    <label>Country</label>
+    <input type="text" name="country" value="<%= freelancer.country %>">
+
+    <label>Bio</label>
+    <textarea name="bio" maxlength="500"><%= freelancer.bio %></textarea>
+
+    <button type="submit">Update Freelancer</button>
+  </form>
+
+  <a href="/freelancers/<%= freelancer._id %>">Back to Freelancer</a>
+</main>
+
+<%- include('../partials/footer') %>

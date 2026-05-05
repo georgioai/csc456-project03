@@ -1,0 +1,29 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a pre-filled form to edit an existing application. Freelancer only (own applications).
+Controller passes { user, application } where application is populated with job data. %>
+
+<%- include('../partials/header', { title: 'Edit Application' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Edit Application for: <%= application.job.title %></h2>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/applications/edit/<%= application._id %>" method="POST">
+
+    <label>Cover Letter</label>
+    <textarea name="coverLetter" maxlength="1000"><%= application.coverLetter %></textarea>
+
+    <label>Proposed Rate ($/hr)</label>
+    <input type="number" name="proposedRate" value="<%= application.proposedRate %>" min="0">
+
+    <button type="submit">Update Application</button>
+  </form>
+
+  <a href="/applications/show/<%= application._id %>">Back to Application</a>
+</main>
+
+<%- include('../partials/footer') %>

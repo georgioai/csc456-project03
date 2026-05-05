@@ -1,0 +1,42 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows full details of a single application.
+Controller passes { user, application } populated with job, client, and freelancer.
+Admin and Client (job owner) see Accept and Reject buttons.
+Freelancer sees Edit and Delete buttons only on their own application. %>
+
+<%- include('../partials/header', { title: 'Application Details' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Application Details</h2>
+
+  <p><strong>Job:</strong> <%= application.job.title %></p>
+  <p><strong>Client:</strong> <%= application.job.client ? application.job.client.name : 'N/A' %></p>
+  <p><strong>Freelancer:</strong> <%= application.freelancer ? application.freelancer.name : 'N/A' %></p>
+  <p><strong>Cover Letter:</strong> <%= application.coverLetter %></p>
+  <p><strong>Proposed Rate:</strong> $<%= application.proposedRate %>/hr</p>
+  <p><strong>Status:</strong> <span class="status-pill status-<%= application.status.replace(/ /g, '-') %>"><%= application.status %></span></p>
+  <p><strong>Applied At:</strong> <%= new Date(application.appliedAt).toDateString() %></p>
+
+  <% if (user.role === 'admin' || user.role === 'client') { %>
+    <form action="/applications/accept/<%= application._id %>" method="POST" style="display:inline;">
+      <button type="submit" onclick="return confirm('Accept this application?')">Accept</button>
+    </form>
+
+    <form action="/applications/reject/<%= application._id %>" method="POST" style="display:inline;">
+      <button type="submit" onclick="return confirm('Reject this application?')">Reject</button>
+    </form>
+  <% } %>
+
+  <% if (user.role === 'admin' || (user.role === 'freelancer' && application.freelancer && application.freelancer._id.toString() === user.refId.toString())) { %>
+    
+    <form action="/applications/delete/<%= application._id %>" method="POST" style="display:inline;">
+      <button type="submit" onclick="return confirm('Delete this application?')">Delete</button>
+    </form>
+   <br> <a href="/applications/edit/<%= application._id %>">Edit</a>
+  <% } %>
+
+  <br><br><a href="/applications">Back to Applications</a>
+</main>
+
+<%- include('../partials/footer') %>

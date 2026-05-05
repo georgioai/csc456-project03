@@ -1,0 +1,49 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a form to post a new job. Admin and Client only.
+Controller passes { user } on GET, { user, error } if creation fails.
+If client: client field is auto-set by controller, not shown in form.
+If admin: must select client manually. %>
+
+<%- include('../partials/header', { title: 'Post New Job' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Post a New Job</h2>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/jobs/new" method="POST">
+
+    <label>Job Title *</label>
+    <input type="text" name="title" required>
+
+    <label>Description *</label>
+    <textarea name="description" required></textarea>
+
+    <label>Category</label>
+    <input type="text" name="category">
+
+    <label>Expected Period</label>
+    <select name="expectedPeriod">
+      <option value="">-- Select period --</option>
+      <option value="2 weeks">2 weeks</option>
+      <option value="1 month">1 month</option>
+      <option value="2 months">2 months</option>
+      <option value="+3 months">+3 months</option>
+    </select>
+
+    <label>Budget ($)</label>
+    <input type="number" name="budget" min="0" step="10">
+
+    <label>Deadline</label>
+    <input type="date" name="deadline">
+
+    <br><button type="submit">Post Job</button>
+  </form>
+
+  <a href="/jobs">Back to Jobs</a>
+</main>
+
+<%- include('../partials/footer') %>

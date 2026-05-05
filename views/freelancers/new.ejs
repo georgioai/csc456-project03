@@ -1,0 +1,41 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a form to create a new freelancer. Admin only.
+Controller passes { user } on GET, and { user, error } if validation fails. %>
+
+<%- include('../partials/header', { title: 'Add New Freelancer' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Add New Freelancer</h2>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/freelancers/new" method="POST">
+
+    <label>Full Name *</label>
+    <input type="text" name="name" required>
+
+    <label>Email *</label>
+    <input type="email" name="email" required>
+
+    <label>Skills (comma separated)</label>
+    <input type="text" name="skills" placeholder="e.g. JavaScript, Node.js, React">
+
+    <label>Hourly Rate ($)</label>
+    <input type="number" name="hourlyRate" min="0">
+
+    <label>Country</label>
+    <input type="text" name="country">
+
+    <label>Bio</label>
+    <textarea name="bio" maxlength="500"></textarea>
+
+    <button type="submit">Create Freelancer</button>
+  </form>
+
+  <a href="/freelancers">Back to Freelancers</a>
+</main>
+
+<%- include('../partials/footer') %>

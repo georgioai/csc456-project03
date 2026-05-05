@@ -1,0 +1,39 @@
+<%# THE FOLLOWING PAGE'S FUNCTION:
+Shows a form to create a new client. Admin only.
+Controller passes { user } on GET, and { user, error } if validation fails. %>
+
+
+<%- include('../partials/header', { title: 'Add New Client' }) %>
+<%- include('../partials/navbar') %>
+
+<main>
+  <h2>Add New Client</h2>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/clients/new" method="POST">
+
+    <label>Full Name *</label>
+    <input type="text" name="name" required>
+
+    <label>Email *</label>
+    <input type="email" name="email" required>
+
+    <label>Company</label>
+    <input type="text" name="company">
+
+    <label>Phone</label>
+    <input type="text" name="phone">
+
+    <label>Country</label>
+    <input type="text" name="country">
+
+    <button type="submit">Create Client</button>
+  </form>
+
+  <a href="/clients">Back to Clients</a>
+</main>
+
+<%- include('../partials/footer') %>
