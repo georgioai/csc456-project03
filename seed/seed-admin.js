@@ -30,7 +30,7 @@ const seedAdmin = async () => {
     // Step 1: Connect to MongoDB using the URI from .env
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to MongoDB');
-    const hashedPassword = await bcrypt.hash('admin123', 10);
+    const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
     // Step 3: Create the admin user document
     const admin = new User({
         name: 'Admin',
