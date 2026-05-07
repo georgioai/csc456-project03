@@ -125,6 +125,8 @@ exports.acceptApplication = async (req, res) => {
       return res.status(403).render('errors/403', { user: req.user });
     }
     await Application.findByIdAndUpdate(req.params.id, { status: 'accepted' });
+    await Application.updateMany({ job: application.job._id, status: 'pending' },{ status: 'rejected' }
+);
     await Job.findByIdAndUpdate(application.job._id, { status: 'in progress' });
     res.redirect('/applications');
   } catch (err) {
