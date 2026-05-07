@@ -26,17 +26,19 @@ Accessed via GET /jobs/client/:clientId %>
         <% for (let i = 0; i < jobs.length; i++) { %>
           <tr>
             <td><%= jobs[i].title %></td>
-            <td><%= jobs[i].status %></td>
+            <td><span class="status-pill status-<%= jobs[i].status.replace(/ /g, '-') %>"><%= jobs[i].status %></span></td>
             <td>$<%= jobs[i].budget %></td>
             <td><%= jobs[i].deadline ? new Date(jobs[i].deadline).toDateString() : 'N/A' %></td>
             <td>
-              <a href="/jobs/show/<%= jobs[i]._id %>">View</a>
-              <% if (user.role === 'admin' || user.role === 'client') { %>
-                <a href="/jobs/edit/<%= jobs[i]._id %>">Edit</a>
-                <form action="/jobs/delete/<%= jobs[i]._id %>" method="POST" style="display:inline;">
-                  <button type="submit" onclick="return confirm('Delete this job?')">Delete</button>
-                </form>
-              <% } %>
+              <div class="action-btns">
+                <a href="/jobs/show/<%= jobs[i]._id %>">View</a>
+                <% if (user.role === 'admin' || user.role === 'client') { %>
+                  <a href="/jobs/edit/<%= jobs[i]._id %>">Edit</a>
+                  <form action="/jobs/delete/<%= jobs[i]._id %>" method="POST">
+                    <button type="submit" onclick="return confirm('Delete this job?')">Delete</button>
+                  </form>
+                <% } %>
+              </div>
             </td>
           </tr>
         <% } %>
