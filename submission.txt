@@ -1,0 +1,11 @@
+Name: Georgio Abou Ibrahim
+Student ID: 202400678
+
+
+GitHub Repo : https://github.com/georgioai/csc456-project03
+
+Render live URL: https://csc456-project03.onrender.com
+
+MongoDB Atlas : mongodb+srv://georgiojabouibrahim_db_user:Nn06jry48bubUN6u@nexthireclstr.8yfhyfq.mongodb.net/nexthire?
+
+appName=NextHireClstr
